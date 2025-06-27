@@ -11,3 +11,5 @@ select
   "contact_data"
 from
     {{ ref('stg_flights__tickets') }}
+where
+    "passenger_id" NOT IN (SELECT passenger_id FROM {{ ref('passengers') }})
