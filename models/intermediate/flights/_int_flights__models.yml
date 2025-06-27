@@ -1,0 +1,36 @@
+models:
+    - name: fct_bookings
+      description: Факты бронирований
+      docs:
+        show: true
+        node_color: red
+      latest_version: 1
+      versions:
+        - v: 1
+    - name: fct_ticket_flights
+      description: Факты билетов перелетов
+      meta:
+        owner: "romanmozzherin2015@gmail.com"
+        contact_telegram: "skyyline71"
+      docs:
+        show: true
+        node_color: green
+      latest_version: 1
+      versions:
+        - v: 1
+      config:
+        contract: {enforced: true}
+      columns:
+        - name: ticket_no
+          data_type: bpchar(13)
+          constraints:
+            - type: not_null
+        - name: flight_id
+          data_type: int4
+        - name: fare_conditions
+          data_type: varchar(10)
+        - name: amount
+          data_type: numeric(10, 2)
+          constraints:
+            - type: check
+              expression: "amount >= 3000"
