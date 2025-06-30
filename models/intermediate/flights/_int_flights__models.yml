@@ -4,9 +4,6 @@ models:
       docs:
         show: true
         node_color: red
-      latest_version: 1
-      versions:
-        - v: 1
     - name: fct_ticket_flights
       description: Факты билетов перелетов
       meta:

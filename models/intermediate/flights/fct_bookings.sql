@@ -3,9 +3,7 @@
         materialized = 'table'
     )
 }}
-select 
-  "book_ref",
-  "book_date",
-  "total_amount"
+select
+    {{ show_columns_relation(ref('stg_flights__bookings')) }}
 from
     {{ ref('stg_flights__bookings') }}
