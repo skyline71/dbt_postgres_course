@@ -33,8 +33,15 @@ clean-targets:         # directories to be removed by `dbt clean`
 # directory as views. These settings can be overridden in the individual model
 # files using the `{{ config(...) }}` macro.
 models:
-  +post_hook:
-    - "{{ check_dependencies() }}"
+  # +post_hook:
+  #   - "{{ check_dependencies() }}"
+  dbt_project_evaluator:
+    marts:
+      data_tests:
+        +enabled: false
+      dag:
+        fct_model_fanout:
+          +enabled: false
   dbt_course_practice:
     staging:
       +tags:
@@ -43,3 +50,5 @@ models:
     intermediate:
       +tags:
         - "intermediate"
+
+on-run-end: "{{ dbt_project_evaluator.print_dbt_project_evaluator_issues() }}"
