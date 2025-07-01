@@ -1,3 +1,11 @@
+{% set flight_statuses = dbt_utils.get_column_values(
+    table=ref('stg_flights__flights'),
+    column='status'
+) %}
+
+{% set flight_statuses_joint = flight_statuses | join(', ') %}
+{% do log('unique flight statuses: ' ~ flight_statuses_joint) %}
+
 {{
     config(
         materialized = 'table'

@@ -4,6 +4,10 @@ models:
       docs:
         show: true
         node_color: red
+    - name: fct_flights
+      tests:
+        - dbt_utils.equal_rowcount:
+            compare_model: ref('stg_flights__flights')
     - name: fct_ticket_flights
       description: Факты билетов перелетов
       meta:

@@ -42,7 +42,7 @@
 {% endmacro %}
 
 {% macro show_columns_relation(source_relation) %}
-    {{ log("Source Relation: " ~ source_relation, True) }}
+    {{ log("Source Relation: " ~ source_relation) }}
 
     {%- set columns = adapter.get_columns_in_relation(source_relation) -%}
 
@@ -81,9 +81,9 @@
 
     {# Вывод результатов в логи #}
 
-    {% do log('Всего в проекте:', True) %}
+    {% do log('Всего в проекте:') %}
     {% for key, cnt in result.items() %}
-        {% do log('- ' ~ cnt ~ ' ' ~ key, True) %}
+        {% do log('- ' ~ cnt ~ ' ' ~ key) %}
     {% endfor %}
 
     {{ return(result) }}
@@ -116,7 +116,7 @@
 
         {% for key, cnt in dependencies_cnt_dict.items() %}
             {% if cnt | sum > 1 %}
-                {{ exceptions.warn('⚠️ Модель ' ~ key ~ ' зависит от ' ~ cnt | sum ~ ' объектов!') }}
+                {{ exceptions.warn('Warning: model ' ~ key ~ ' depends on ' ~ cnt | sum ~ ' objects!') }}
             {% endif %}
         {% endfor %}
     {% endif %}
