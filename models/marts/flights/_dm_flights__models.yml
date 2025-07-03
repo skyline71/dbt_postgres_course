@@ -1,0 +1,6 @@
+models:
+    - name: dm_seats_occupied
+      description: Витрина данных перелетов
+      docs:
+        show: true
+        node_color: yellow
