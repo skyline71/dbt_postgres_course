@@ -1,0 +1,50 @@
+unit_tests:
+  - name: test_append_one_new_row
+    description: "1 строка загружена в модель ранее. Во время обновления должна подгрузиться 1 новая строка с большим scheduled_arrival"
+    model: stg_flights__flights
+    overrides:
+      macros:
+        is_incremental: true
+    given:
+      - input: source('demo_src', 'flights')
+        rows:
+          - {flight_id: 67796, scheduled_arrival: 2025-01-01}
+      - input: this
+        rows:
+          - {flight_id: 67795, scheduled_arrival: 2024-12-15}
+    expect:
+      rows:
+          - {flight_id: 67796, scheduled_arrival: 2025-01-01}
+  - name: test_skip_one_old_row
+    description: "1 строка загружена в модель ранее. Во время обновления не должна подгрузиться 1 новая строка с меньшим scheduled_arrival"
+    model: stg_flights__flights
+    overrides:
+      macros:
+        is_incremental: true
+    given:
+      - input: source('demo_src', 'flights')
+        rows:
+          - {flight_id: 67797, scheduled_arrival: 2024-09-01}
+          - {flight_id: 67798, scheduled_arrival: 2025-01-03}
+      - input: this
+        rows:
+          - {flight_id: 67796, scheduled_arrival: 2025-01-01}
+    expect:
+      rows:
+          - {flight_id: 67798, scheduled_arrival: 2025-01-03}
+  - name: test_append_one_same_row
+    description: "1 строка загружена в модель ранее. Во время обновления должна подгрузиться 1 новая строка с тем же flight_id но с обновленным status"
+    model: stg_flights__flights
+    overrides:
+      macros:
+        is_incremental: true
+    given:
+      - input: source('demo_src', 'flights')
+        rows:
+          - {flight_id: 67796, scheduled_arrival: 2025-01-01, status: Cancelled}
+      - input: this
+        rows:
+          - {flight_id: 67796, scheduled_arrival: 2025-01-01, status: Scheduled}
+    expect:
+      rows:
+          - {flight_id: 67796, scheduled_arrival: 2025-01-01, status: Cancelled}

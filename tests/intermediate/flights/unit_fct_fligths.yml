@@ -1,0 +1,31 @@
+unit_tests:
+  - name: test_actual_duration_flight_not_null
+    description: "Время фактического прибытия больше времени отправления. Должны быть заданы поля времени фактического отправления и прибытия"
+    model: fct_flights
+    given:
+      - input: ref('stg_flights__flights')
+        rows:
+          - {actual_departure: 2017-06-12T06:39:00+00:00, actual_arrival: 2017-06-12T07:35:00+00:00}
+    expect:
+      rows:
+          - {actual_departure: 2017-06-12T06:39:00+00:00, actual_arrival: 2017-06-12T07:35:00+00:00, actual_duration_flight: 0:56:00}
+  - name: test_actual_duration_flight_actual_arrival_is_null
+    description: "Время фактической длительности полета не вычисляется. Должно быть не задано поле времени фактического прибытия"
+    model: fct_flights
+    given:
+      - input: ref('stg_flights__flights')
+        rows:
+          - {actual_departure: 2017-08-15 17:09:00.000 +0300, actual_arrival: NULL}
+    expect:
+      rows:
+          - {actual_departure: 2017-08-15 17:09:00.000 +0300, actual_arrival: NULL, actual_duration_flight: 00:00:00}
+  - name: test_actual_duration_flight_is_null
+    description: "Время фактической длительности полета не вычисляется. Должно быть не задано поле времени фактического отправления и прибытия"
+    model: fct_flights
+    given:
+      - input: ref('stg_flights__flights')
+        rows:
+          - {actual_departure: NULL, actual_arrival: NULL}
+    expect:
+      rows:
+          - {actual_departure: NULL, actual_arrival: NULL, actual_duration_flight: 00:00:00}
