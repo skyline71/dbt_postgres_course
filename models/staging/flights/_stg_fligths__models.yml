@@ -1,0 +1,28 @@
+version: 2
+
+models:
+  - name: stg_flights__airports
+    columns:
+      - name: airport_code
+        data_tests:
+          - not_null
+          - unique
+          - airport_code_pattern:
+              config:
+                severity: warn
+      - name: airport_name
+        data_tests:
+          - not_null
+          - unique
+      - name: city
+        data_tests:
+          - not_null
+      - name: coordinates
+        data_tests:
+          - not_null
+      - name: timezone
+        data_tests:
+          - not_null
+          - timezone_pattern:
+              config:
+                severity: error
